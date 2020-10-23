@@ -24,6 +24,7 @@ export { saveCustomFields } from './saveCustomFields';
 export { saveCustomFieldsWithoutValidation } from './saveCustomFieldsWithoutValidation';
 export { saveUser } from './saveUser';
 export { sendMessage } from './sendMessage';
+export { autoReply } from './autoReply';
 export { setEmail } from './setEmail';
 export { setRealName, _setRealName } from './setRealName';
 export { setStatusText, _setStatusText, _setStatusTextPromise } from './setStatusText';
