@@ -76,13 +76,17 @@ export function executeSendMessage(uid, message) {
 		const room = canSendMessage(rid, { uid, username: user.username, type: user.type });
 
 		metrics.messagesSent.inc(); // TODO This line needs to be moved to it's proper place. See the comments on: https://github.com/RocketChat/Rocket.Chat/pull/5736
-		let messageReply = sendMessage(user, message, room, false);
-		const resp = autoReply(message.msg, 'test_department_id');
-		if (resp.ok) {
-			message._id = `${ message._id }_reply`;
-			message.msg = resp.res;
-			user._id = 'rocket.cat';
-			messageReply = sendMessage(user, message, room, false);
+		const messageReply = sendMessage(user, message, room, false);
+		const departmentId = user.username.split('_')[1];
+		if (departmentId) {
+			const resp = autoReply(message.msg, departmentId);
+			if (resp.ok) {
+				message._id = `${ message._id }_reply`;
+				message.msg = resp.res;
+				message.ts = new Date(message.ts.getTime() + 1000);
+				user._id = 'rocket.cat';
+				sendMessage(user, message, room, false);
+			}
 		}
 		return messageReply;
 	} catch (error) {
