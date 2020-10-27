@@ -77,7 +77,8 @@ export function executeSendMessage(uid, message) {
 
 		metrics.messagesSent.inc(); // TODO This line needs to be moved to it's proper place. See the comments on: https://github.com/RocketChat/Rocket.Chat/pull/5736
 		const messageReply = sendMessage(user, message, room, false);
-		const departmentId = user.username.split('_')[1];
+		const parts = user.username.split('_');
+		const departmentId = parts[parts.length - 1];
 		if (departmentId) {
 			const resp = autoReply(message.msg, departmentId);
 			if (resp.ok) {
